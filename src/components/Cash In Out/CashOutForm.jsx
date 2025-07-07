@@ -13,7 +13,7 @@ export default function CashOutForm() {
     return (
         <div>
             <div>
-                <p>Cash In form</p>
+                <p>Cash Out form</p>
             </div>
             <div>
                 <form action="">
