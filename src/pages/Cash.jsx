@@ -20,7 +20,26 @@ export default function Cash() {
         }
       </div>
       {/* Table of All Transection */}
-      
+      <div>
+        <table className="table-auto w-full border border-gray-300 text-sm text-center">
+          <thead className="bg-gray-100 text-gray-700">
+            <tr>
+              <th className="border px-4 py-1">Date & Time</th>
+              <th className="border px-4 py-1">Cash In/Out</th>
+              <th className="border px-4 py-1">Description</th>
+              <th className="border px-4 py-1">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="hover:bg-gray-50">
+              <td className="border border-gray-200 px-4 py-1">07/07/25</td>
+              <td className="border border-gray-200 px-4 py-1">Family</td>
+              <td className="border border-gray-200 px-4 py-1">any others any othersany othersany others</td>
+              <td className="border border-gray-200 px-4 py-1 text-center font-medium text-green-600">1000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
