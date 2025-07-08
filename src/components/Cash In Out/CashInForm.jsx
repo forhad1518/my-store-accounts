@@ -16,7 +16,9 @@ export default function CashInForm({ setNewCashData }) {
         const description = e.target.description.value;
 
         const all_data = { date, cash_in_option, amount, description, cash: "in" }
+        // for set new cash data show
         setNewCashData(all_data);
+        // updata new data in localstorage
         newCashData(all_data);
     }
 

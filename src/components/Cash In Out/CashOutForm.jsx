@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import autoLocalDateTime from '../../utils/autoLocalDateTime';
 import useLocalStorageSet from '../../hooks/LocalStorage/useLocalStorageSet';
 
-export default function CashOutForm() {
+export default function CashOutForm({ setNewCashData }) {
     /* Handle cash out form */
     const { newCashData } = useLocalStorageSet()
     const cashOutformHandle = e => {
@@ -14,6 +14,9 @@ export default function CashOutForm() {
         const description = e.target.description.value;
 
         const all_data = { date, cash_out_option, amount, description, cash: "out" };
+        // for set new cash data show
+        setNewCashData(all_data);
+        // updata new data in localstorage
         newCashData(all_data)
 
     }
