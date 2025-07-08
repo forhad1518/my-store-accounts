@@ -3,10 +3,10 @@ import useLocalStorageSet from '../../hooks/LocalStorage/useLocalStorageSet';
 import autoLocalDateTime from '../../utils/autoLocalDateTime';
 
 
-export default function CashInForm() {
+export default function CashInForm({ setNewCashData }) {
 
     /* Handle cash in form */
-    const { cashData, newCashData } = useLocalStorageSet();
+    const { newCashData } = useLocalStorageSet();
     const cashInformHandle = e => {
         e.preventDefault()
         /* Data from cash in form */
@@ -16,8 +16,8 @@ export default function CashInForm() {
         const description = e.target.description.value;
 
         const all_data = { date, cash_in_option, amount, description, cash: "in" }
+        setNewCashData(all_data);
         newCashData(all_data);
-        console.log(cashData)
     }
 
     /* Auto Local time set */

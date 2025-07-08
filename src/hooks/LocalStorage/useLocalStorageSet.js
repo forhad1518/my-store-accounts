@@ -7,7 +7,7 @@ export default function useLocalStorageSet() {
     useEffect(() => {
         const saved = JSON.parse(localStorage.getItem("cashData")) || [];
         setCashData(saved);
-    }, [setCashData])
+    }, [])
 
     // New entry data
     const newCashData = (entry) => {
