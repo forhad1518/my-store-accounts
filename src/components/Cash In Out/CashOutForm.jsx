@@ -10,7 +10,7 @@ export default function CashOutForm() {
         const amount = e.target.amount.value;
         const description = e.target.description.value;
 
-        const all_data = [date, cash_out_option, amount, description]
+        const all_data = {date, cash_out_option, amount, description, cash: "out"};
         console.log(all_data)
 
     }

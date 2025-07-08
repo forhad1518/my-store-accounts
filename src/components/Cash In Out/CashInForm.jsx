@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import useLocalStorageSet from '../../hooks/LocalStorage/useLocalStorageSet';
+
 
 export default function CashInForm() {
 
     /* Handle cash in form */
+    const { cashData, newCashData } = useLocalStorageSet();
     const cashInformHandle = e => {
         e.preventDefault()
         /* Data from cash in form */
@@ -11,9 +14,9 @@ export default function CashInForm() {
         const amount = e.target.amount.value;
         const description = e.target.description.value;
 
-        const all_data = [date, cash_in_option, amount, description]
-        console.log(all_data)
-
+        const all_data = { date, cash_in_option, amount, description, cash: "in" }
+        newCashData(all_data);
+        console.log(cashData)
     }
 
     /* Auto Local time set */

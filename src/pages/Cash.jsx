@@ -10,7 +10,7 @@ export default function Cash() {
   return (
     <div>
       {/* Cash in out button */}
-      <div>
+      <div className='flex justify-center gap-x-5'>
         <CashInB setDefaultForm={setDefaultForm}></CashInB>
         <CashOutB setDefaultForm={setDefaultForm}></CashOutB>
       </div>
@@ -20,6 +20,7 @@ export default function Cash() {
         }
       </div>
       {/* Table of All Transection */}
+      <div className='text-center font-bold my-4'>***All Transections Here***</div>
       <div>
         <table className="table-auto w-full border border-gray-300 text-sm text-center">
           <thead className="bg-gray-100 text-gray-700">
