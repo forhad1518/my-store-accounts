@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import autoLocalDateTime from '../../utils/autoLocalDateTime';
 
 export default function CashOutForm() {
     /* Handle cash out form */
@@ -10,19 +11,13 @@ export default function CashOutForm() {
         const amount = e.target.amount.value;
         const description = e.target.description.value;
 
-        const all_data = {date, cash_out_option, amount, description, cash: "out"};
+        const all_data = { date, cash_out_option, amount, description, cash: "out" };
         console.log(all_data)
 
     }
     /* Auto Local time set */
-    const [localTime, setLocalTime] = useState('')
-    useEffect(() => {
-        const now = new Date();
-        const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-            .toISOString()
-            .slice(0, 16);
-        setLocalTime(local)
-    }, [])
+    const localTime = autoLocalDateTime();
+    
     return (
         <div>
             <div>

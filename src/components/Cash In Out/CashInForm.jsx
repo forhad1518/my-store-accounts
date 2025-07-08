@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useLocalStorageSet from '../../hooks/LocalStorage/useLocalStorageSet';
+import autoLocalDateTime from '../../utils/autoLocalDateTime';
 
 
 export default function CashInForm() {
@@ -20,14 +21,8 @@ export default function CashInForm() {
     }
 
     /* Auto Local time set */
-    const [localTime, setLocalTime] = useState('')
-    useEffect(() => {
-        const now = new Date();
-        const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-            .toISOString()
-            .slice(0, 16);
-        setLocalTime(local)
-    }, [])
+    const localTime = autoLocalDateTime();
+
     return (
         <div>
             <div>
