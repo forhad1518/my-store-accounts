@@ -12,7 +12,7 @@ export default function Cash() {
   return (
     <div>
       {/* Cash in out button */}
-      <div className='flex justify-center gap-x-5'>
+      <div className='flex justify-center gap-x-5 my-3'>
         <CashInB setDefaultForm={setDefaultForm}></CashInB>
         <CashOutB setDefaultForm={setDefaultForm}></CashOutB>
       </div>
@@ -22,7 +22,7 @@ export default function Cash() {
         }
       </div>
       {/* Table of All Transection */}
-      <div className='text-center font-bold my-4'>***All Transections Here***</div>
+      <div className='text-center font-bold my-2'>***All Transections Here***</div>
       <CashTable newCashData={newCashData}></CashTable>
     </div>
   )

@@ -14,11 +14,11 @@ export default function CashInForm({ setNewCashData }) {
         e.preventDefault()
         /* Data from cash in form */
         const date = e.target.date.value;
-        const cash_in_option = e.target.cash_in_option.value;
+        const cash_option = e.target.cash_in_option.value;
         const amount = parseFloat(e.target.amount.value);
         const description = e.target.description.value;
 
-        const all_data = { id, date, cash_in_option, amount, description, cash: "in" }
+        const all_data = { id, date, cash_option, amount, description, cash: "in" }
         // for set new cash data show
         setNewCashData(all_data);
         // updata new data in localstorage
@@ -29,22 +29,30 @@ export default function CashInForm({ setNewCashData }) {
     const localTime = autoLocalDateTime();
 
     return (
-        <div>
-            <div>
-                <p>Cash In form</p>
-            </div>
-            <div>
-                <form onSubmit={cashInformHandle} action="">
-                    {/* Input Date & Time */}
+        <div className="max-w-4xl mx-auto px-6 py-3 mb-6 bg-white shadow-md rounded-lg">
+            <h2 className="text-xl font-semibold text-gray-700 mb-6 border-b pb-2 text-center">
+                💵 Cash In Form
+            </h2>
+
+            <form onSubmit={cashInformHandle} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Input Date & Time */}
+                <div className="col-span-1">
                     <input
-                        className="border p-2 rounded"
                         type="datetime-local"
+                        name="date"
                         defaultValue={localTime}
-                        name="date" id=""
                         required
+                        className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
                     />
-                    {/* Select Option */}
-                    <select name='cash_in_option' className="border p-2 rounded" required>
+                </div>
+
+                {/* Select Option */}
+                <div className="col-span-1">
+                    <select
+                        name="cash_in_option"
+                        required
+                        className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                    >
                         <option value="">Select Work</option>
                         <option value="Store Work">Store Work</option>
                         <option value="NameJari Office">NameJari Office</option>
@@ -54,14 +62,41 @@ export default function CashInForm({ setNewCashData }) {
                         <option value="Prosno Typing">Prosno Typing</option>
                         <option value="Others">Others</option>
                     </select>
-                    {/* input Amount */}
-                    <input className="border p-2 rounded" placeholder='Amount/Taka' type="number" name="amount" id="" required />
-                    {/* Description */}
-                    <input className="border p-2 rounded" placeholder='Description' type="text" name="description" id="" required />
-                    {/* Submit */}
-                    <input className="border p-2 rounded" type="submit" value="Save" required />
-                </form>
-            </div>
+                </div>
+
+                {/* Amount */}
+                <div className="col-span-1">
+                    <input
+                        type="number"
+                        name="amount"
+                        placeholder="Amount/Taka"
+                        required
+                        className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                    />
+                </div>
+
+                {/* Description */}
+                <div className="col-span-1">
+                    <input
+                        type="text"
+                        name="description"
+                        placeholder="Description"
+                        required
+                        className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+                    />
+                </div>
+
+                {/* Submit Button */}
+                <div className="col-span-1 md:col-span-2">
+                    <button
+                        type="submit"
+                        className="w-full bg-green-600 hover:bg-green-700 text-white p-2 rounded-md font-semibold transition"
+                    >
+                        Save Entry
+                    </button>
+                </div>
+            </form>
         </div>
+
     )
 }

@@ -6,13 +6,6 @@ import { Outlet } from 'react-router-dom'
 export default function MainLayout() {
   return (
     <div className="h-screen overflow-hidden bg-gray-50 py-5">
-      <header>
-        {/* Navbar */}
-        <div className="w-10/12 mx-auto">
-          <Navbar />
-        </div>
-      </header>
-
       {/* Main Layout */}
       <main>
         <div className="grid grid-cols-12 gap-2 w-10/12 mx-auto h-[calc(100vh-100px)] mt-2">

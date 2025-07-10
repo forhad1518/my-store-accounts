@@ -43,35 +43,87 @@ export default function CashTable({ newCashData }) {
 
     }
 
+    const [filter, setFilter] = useState("all");
+
+    // Unique options from data
+    const allOptions = [...new Set(updateData.map(item => item.cash_option))];
+
+    // Filtered Data
+    const filteredData = filter === "all"
+        ? updateData
+        : updateData.filter(item => item.cash_option === filter);
+
 
     return (
-        <div>
-            <table className="table-auto w-full border border-gray-300 text-sm text-center">
-                <thead className="bg-gray-100 text-gray-700">
-                    <tr>
-                        <th className="border px-4 py-1">Date & Time</th>
-                        <th className="border px-4 py-1">Cash In/Out</th>
-                        <th className="border px-4 py-1">Description</th>
-                        <th className="border px-4 py-1">Amount</th>
-                        <th className="border px-4 py-1">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        /* Revers data for use slice().reverse() */
-                        updateData.slice().reverse().map((data) => <tr key={data.id} className="hover:bg-gray-50">
-                            <td className="border border-gray-200 px-4 py-1">{data.date}</td>
-                            <td className="border border-gray-200 px-4 py-1">{data.cash_in_option || data.cash_out_option}</td>
-                            <td className="border border-gray-200 px-4 py-1">{data.description}</td>
-                            <td className="border border-gray-200 px-4 py-1 text-center font-medium text-green-600">{data.amount}</td>
-                            <td className="border border-gray-200 px-4 py-1 text-center font-medium">
-                                <button className='mx-2 text-green-600'>Edit</button>
-                                <button onClick={() => handleDelete(data.id)} className='text-red-600'>Delete</button>
-                            </td>
-                        </tr>)
-                    }
-                </tbody>
-            </table>
+        <div className="max-w-6xl mx-auto py-3">
+
+            {/* Filter Section */}
+            <div className="flex flex-wrap gap-2 items-center mb-4">
+                <button
+                    onClick={() => setFilter("all")}
+                    className={`px-3 py-1 rounded-full text-sm border ${filter === "all" ? "bg-blue-600 text-white" : "bg-white text-gray-600"
+                        }`}
+                >
+                    All
+                </button>
+                {allOptions.map(option => (
+                    <button
+                        key={option}
+                        onClick={() => setFilter(option)}
+                        className={`px-3 py-1 rounded-full text-sm border ${filter === option ? "bg-blue-600 text-white" : "bg-white text-gray-600"
+                            }`}
+                    >
+                        {option}
+                    </button>
+                ))}
+            </div>
+
+            {/* Table */}
+            <div className="max-h-[200px] overflow-y-auto">
+                <table className="table-auto w-full text-sm text-center border-collapse">
+                    <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
+                        <tr>
+                            <th className="border px-4 py-2">Date & Time</th>
+                            <th className="border px-4 py-2">Cash In/Out</th>
+                            <th className="border px-4 py-2">Description</th>
+                            <th className="border px-4 py-2">Amount</th>
+                            <th className="border px-4 py-2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            filteredData
+                                .slice()
+                                .reverse()
+                                .map(data => (
+                                    <tr
+                                        key={data.id}
+                                        className={`w-full table-auto ${data.cash === "in"
+                                            ? "bg-green-100 hover:bg-green-200"
+                                            : "bg-red-100 hover:bg-red-200"
+                                            }`}
+                                    >
+                                        <td className="border px-4 py-2">{data.date}</td>
+                                        <td className="border px-4 py-2">{data.cash_option}</td>
+                                        <td className="border px-4 py-2">{data.description}</td>
+                                        <td className="border px-4 py-2 text-green-700 font-medium">
+                                            {data.amount}
+                                        </td>
+                                        <td className="border px-4 py-2">
+                                            <button
+                                                onClick={() => handleDelete(data.id)}
+                                                className="text-red-600 hover:underline"
+                                            >
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }
