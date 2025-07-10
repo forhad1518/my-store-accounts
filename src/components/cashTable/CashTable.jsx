@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useLocalStorageSet from '../../hooks/LocalStorage/useLocalStorageSet';
+import Swal from 'sweetalert2';
 
 export default function CashTable({ newCashData }) {
     const { cashData } = useLocalStorageSet();
@@ -17,6 +18,31 @@ export default function CashTable({ newCashData }) {
         }
     }, [newCashData])
 
+    // delete item from table
+    const handleDelete = id => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const deleted = updateData.filter(data => data.id !== id);
+                setUpdateData(deleted);
+                localStorage.setItem("cashData", JSON.stringify(deleted));
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+            }
+        });
+
+    }
+
 
     return (
         <div>
@@ -33,12 +59,15 @@ export default function CashTable({ newCashData }) {
                 <tbody>
                     {
                         /* Revers data for use slice().reverse() */
-                        updateData.slice().reverse().map((data, id) => <tr key={id} className="hover:bg-gray-50">
+                        updateData.slice().reverse().map((data) => <tr key={data.id} className="hover:bg-gray-50">
                             <td className="border border-gray-200 px-4 py-1">{data.date}</td>
                             <td className="border border-gray-200 px-4 py-1">{data.cash_in_option || data.cash_out_option}</td>
                             <td className="border border-gray-200 px-4 py-1">{data.description}</td>
                             <td className="border border-gray-200 px-4 py-1 text-center font-medium text-green-600">{data.amount}</td>
-                            <td className="border border-gray-200 px-4 py-1 text-center font-medium text-green-600">edit delete</td>
+                            <td className="border border-gray-200 px-4 py-1 text-center font-medium">
+                                <button className='mx-2 text-green-600'>Edit</button>
+                                <button onClick={() => handleDelete(data.id)} className='text-red-600'>Delete</button>
+                            </td>
                         </tr>)
                     }
                 </tbody>

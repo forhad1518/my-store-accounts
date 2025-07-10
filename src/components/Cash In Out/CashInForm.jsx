@@ -5,6 +5,9 @@ import autoLocalDateTime from '../../utils/autoLocalDateTime';
 
 export default function CashInForm({ setNewCashData }) {
 
+    // auto id generate
+    const id = crypto.randomUUID();
+
     /* Handle cash in form */
     const { newCashData } = useLocalStorageSet();
     const cashInformHandle = e => {
@@ -12,10 +15,10 @@ export default function CashInForm({ setNewCashData }) {
         /* Data from cash in form */
         const date = e.target.date.value;
         const cash_in_option = e.target.cash_in_option.value;
-        const amount = e.target.amount.value;
+        const amount = parseFloat(e.target.amount.value);
         const description = e.target.description.value;
 
-        const all_data = { date, cash_in_option, amount, description, cash: "in" }
+        const all_data = { id, date, cash_in_option, amount, description, cash: "in" }
         // for set new cash data show
         setNewCashData(all_data);
         // updata new data in localstorage
