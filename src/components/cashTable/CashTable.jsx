@@ -78,16 +78,16 @@ export default function CashTable({ newCashData }) {
                 ))}
             </div>
 
-            {/* Table */}
-            <div className="max-h-[200px] overflow-y-auto">
-                <table className="table-auto w-full text-sm text-center border-collapse">
+            {/* Table: Responsive */}
+            <div className="max-h-[300px] overflow-x-auto w-full">
+                <table className="min-w-[600px] w-full border-collapse text-center text-xs sm:text-sm">
                     <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                         <tr>
-                            <th className="border px-4 py-2">Date & Time</th>
-                            <th className="border px-4 py-2">Cash In/Out</th>
-                            <th className="border px-4 py-2">Description</th>
-                            <th className="border px-4 py-2">Amount</th>
-                            <th className="border px-4 py-2">Action</th>
+                            <th className="border px-2 py-1 sm:px-4 sm:py-2">Date & Time</th>
+                            <th className="border px-2 py-1 sm:px-4 sm:py-2">Cash In/Out</th>
+                            <th className="border px-2 py-1 sm:px-4 sm:py-2">Description</th>
+                            <th className="border px-2 py-1 sm:px-4 sm:py-2">Amount</th>
+                            <th className="border px-2 py-1 sm:px-4 sm:py-2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,23 +103,20 @@ export default function CashTable({ newCashData }) {
                                             : "bg-red-100 hover:bg-red-200"
                                             }`}
                                     >
-                                        <td className="border px-4 py-2">{data.date}</td>
-                                        <td className="border px-4 py-2">{data.cash_option}</td>
-                                        <td className="border px-4 py-2">{data.description}</td>
-                                        <td className="border px-4 py-2 text-green-700 font-medium">
-                                            {data.amount}
-                                        </td>
-                                        <td className="border px-4 py-2">
+                                        <td className="border px-2 py-1 sm:px-4 sm:py-2 break-words max-w-[120px]">{data.date}</td>
+                                        <td className="border px-2 py-1 sm:px-4 sm:py-2">{data.cash_option}</td>
+                                        <td className="border px-2 py-1 sm:px-4 sm:py-2 break-words max-w-[140px]">{data.description}</td>
+                                        <td className="border px-2 py-1 sm:px-4 sm:py-2 text-green-700 font-medium">{data.amount}</td>
+                                        <td className="border px-2 py-1 sm:px-4 sm:py-2">
                                             <button
                                                 onClick={() => handleDelete(data.id)}
-                                                className="text-red-600 hover:underline"
+                                                className="text-red-600 hover:underline text-xs sm:text-sm"
                                             >
                                                 Delete
                                             </button>
                                         </td>
                                     </tr>
                                 ))
-
                         }
                     </tbody>
                 </table>
