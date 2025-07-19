@@ -15,6 +15,7 @@ export default function Cash() {
   const [defaultForm, setDefaultForm] = useState('Cash_In');
 
   const { cashData } = useLocalStorageSet();
+  console.log(cashData)
 
 
   // Function to handle sync action
@@ -30,15 +31,34 @@ export default function Cash() {
       });
       return;
     }
-    axiosCash.post('/cash', { cashData })
+    axiosCash.post('/cash', cashData)
       .then(response => {
-        localStorage.clear()
         Swal.fire({
-          icon: 'success',
-          title: 'Data Synced',
-          text: 'Your cash data has been successfully synced.',
-        })
-        console.log('Data synced successfully:', response.data);
+          icon: 'warning',
+          title: 'You are sure',
+          text: 'your cash data will be synced with server',
+          showCancelButton: true,
+          showConfirmButton: true,
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.clear()
+            console.log('Data synced successfully:', response.data);
+            Swal.fire({
+              icon: 'success',
+              title: 'Data Synced',
+              text: 'Your cash data has been synced successfully.',
+            });
+            // You can also handle the response as needed
+            // For example, you can update the state or show a success message
+            // console.log(response.data);
+            // setCashData(response.data); // If you want to update the state with new data
+            // Swal.fire('Success', 'Data synced successfully!', 'success');  
+          }
+
+        });
       })
       .catch(error => {
         console.error('Error syncing data:', error);

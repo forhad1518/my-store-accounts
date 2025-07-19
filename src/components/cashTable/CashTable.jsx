@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import useLocalStorageSet from '../../hooks/LocalStorage/useLocalStorageSet';
 import Swal from 'sweetalert2';
+import axiosCash from '../../api/axiosCash';
 
 export default function CashTable({ newCashData }) {
     const { cashData } = useLocalStorageSet();
     const [updateData, setUpdateData] = useState([])
+    console.log(updateData)
+
 
     // set old data from localstoreage
     useEffect(() => {
@@ -17,6 +20,25 @@ export default function CashTable({ newCashData }) {
             setUpdateData(prev => [...prev, newCashData])
         }
     }, [newCashData])
+
+    // data load form server 
+    useEffect(() => {
+        axiosCash.get('/cash')
+            .then(response => {
+                setUpdateData(prev => {
+                    const localIds = new Set(prev.map(item => item.id));
+                    const serverData = response.data.data || [];
+                    // Merge without duplicates (by id)
+                    const merged = [
+                        ...serverData.filter(item => !localIds.has(item.id)), ...prev
+                    ];
+                    return merged;
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching cash data:', error);
+            });
+    }, [])
 
     // delete item from table
     const handleDelete = id => {
@@ -97,7 +119,7 @@ export default function CashTable({ newCashData }) {
                                 .reverse()
                                 .map(data => (
                                     <tr
-                                        key={data.id}
+                                        key={data.id || data._id}
                                         className={`w-full table-auto ${data.cash === "in"
                                             ? "bg-green-100 hover:bg-green-200"
                                             : "bg-red-100 hover:bg-red-200"
@@ -112,7 +134,8 @@ export default function CashTable({ newCashData }) {
                                         <td className="border px-4 py-2">
                                             <button
                                                 onClick={() => handleDelete(data.id)}
-                                                className="text-red-600 hover:underline"
+                                                className={`hover:underline ${data._id ? "cursor-no-drop text-red-400" : "text-red-600"}`}
+                                                disabled={data._id ? true : false}
                                             >
                                                 Delete
                                             </button>
