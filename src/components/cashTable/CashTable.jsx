@@ -3,11 +3,9 @@ import useLocalStorageSet from '../../hooks/LocalStorage/useLocalStorageSet';
 import Swal from 'sweetalert2';
 import axiosCash from '../../api/axiosCash';
 
-export default function CashTable({ newCashData }) {
+export default function CashTable({ newCashData, setSynckClicked }) {
     const { cashData } = useLocalStorageSet();
     const [updateData, setUpdateData] = useState([])
-    console.log(updateData)
-
 
     // set old data from localstoreage
     useEffect(() => {
@@ -60,6 +58,7 @@ export default function CashTable({ newCashData }) {
                     text: "Your file has been deleted.",
                     icon: "success"
                 });
+                setSynckClicked(prev => !prev); // Trigger sync state change
             }
         });
 
@@ -123,7 +122,8 @@ export default function CashTable({ newCashData }) {
                                         className={`w-full table-auto ${data.cash === "in"
                                             ? "bg-green-100 hover:bg-green-200"
                                             : "bg-red-100 hover:bg-red-200"
-                                            }`}
+                                            } ${data._id ? "border-2 border-green-600" : "border-2 border-red-600"}`}
+                                        title={`${data._id ? "Sycked Data" : "Local Data"} - ${data.cash_option}`}
                                     >
                                         <td className="border px-4 py-2">{data.date}</td>
                                         <td className="border px-4 py-2">{data.cash_option}</td>

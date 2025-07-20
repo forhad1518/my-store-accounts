@@ -14,9 +14,9 @@ export default function Cash() {
   /* Cash in out form control */
   const [defaultForm, setDefaultForm] = useState('Cash_In');
 
-  const { cashData } = useLocalStorageSet();
-  console.log(cashData)
-
+  // useLocalStorageSet hook to get cashData from local storage
+  const [sycnkClicked, setSynckClicked] = useState(false); /* handle auto sync data */
+  const { cashData } = useLocalStorageSet({ newCashData, sycnkClicked });
 
   // Function to handle sync action
   // This function can be used to sync data with a server or perform any other action 
@@ -30,44 +30,47 @@ export default function Cash() {
         text: 'There is no data to sync.',
       });
       return;
-    }
-    axiosCash.post('/cash', cashData)
-      .then(response => {
-        Swal.fire({
-          icon: 'warning',
-          title: 'You are sure',
-          text: 'your cash data will be synced with server',
-          showCancelButton: true,
-          showConfirmButton: true,
-          confirmButtonText: 'OK',
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-        }).then((result) => {
-          if (result.isConfirmed) {
-            localStorage.clear()
-            console.log('Data synced successfully:', response.data);
-            Swal.fire({
-              icon: 'success',
-              title: 'Data Synced',
-              text: 'Your cash data has been synced successfully.',
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'You are sure',
+        text: 'your cash data will be synced with server',
+        showCancelButton: true,
+        showConfirmButton: true,
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosCash.post('/cash', cashData)
+            .then(response => {
+              localStorage.clear()
+              console.log('Data synced successfully:', response.data);
+              Swal.fire({
+                icon: 'success',
+                title: 'Data Synced',
+                text: 'Your cash data has been synced successfully.',
+              });
+              // You can also handle the response as needed
+              // For example, you can update the state or show a success message
+              // console.log(response.data);
+              // setCashData(response.data); // If you want to update the state with new data
+              // Swal.fire('Success', 'Data synced successfully!', 'success');
+            })
+            .catch(error => {
+              console.error('Error syncing data:', error);
             });
-            // You can also handle the response as needed
-            // For example, you can update the state or show a success message
-            // console.log(response.data);
-            // setCashData(response.data); // If you want to update the state with new data
-            // Swal.fire('Success', 'Data synced successfully!', 'success');  
-          }
-
-        });
-      })
-      .catch(error => {
-        console.error('Error syncing data:', error);
+        }
       });
+    }
   }
   return (
     <div>
       <div>
-        <SyncButton handleSync={handleSync}></SyncButton>
+        <SyncButton handleSync={() => {
+          setSynckClicked(!sycnkClicked);
+          handleSync();
+        }}></SyncButton>
       </div>
       <div>
         <div>
@@ -83,7 +86,7 @@ export default function Cash() {
           </div>
           {/* Table of All Transection */}
           <div className='text-center font-bold my-2'>***All Transections Here***</div>
-          <CashTable newCashData={newCashData}></CashTable>
+          <CashTable newCashData={newCashData} setSynckClicked={setSynckClicked}></CashTable>
         </div>
       </div>
     </div>
