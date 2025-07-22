@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import useLocalStorageSet from '../../hooks/LocalStorage/useLocalStorageSet';
 import autoLocalDateTime from '../../utils/autoLocalDateTime';
+import axiosCash from '../../api/axiosCash';
+import Swal from 'sweetalert2';
 
 
 export default function CashInForm({ setNewCashData }) {
 
-    // auto id generate
-    const id = crypto.randomUUID();
-
-    /* Handle cash in form */
-    const { newCashData } = useLocalStorageSet();
     const cashInformHandle = e => {
         e.preventDefault()
         /* Data from cash in form */
@@ -18,11 +13,27 @@ export default function CashInForm({ setNewCashData }) {
         const amount = parseFloat(e.target.amount.value);
         const description = e.target.description.value;
 
-        const all_data = { id, date, cash_option, amount, description, cash: "in" }
-        // for set new cash data show
-        setNewCashData(all_data);
-        // updata new data in localstorage
-        newCashData(all_data);
+        const all_data = { date, cash_option, amount, description, cash: "in" }
+
+        // Save data to server
+        axiosCash.post('/cash', all_data)
+            .then(res => {
+                console.log('Data synced successfully:', res.data);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Data Synced',
+                    text: 'Your cash data has been synced successfully.',
+                });
+            })
+            .catch(err => {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Data Synced Failed',
+                    text: 'Your cash data has been not synced.',
+                });
+                console.error("Error saving cash in data:", err);
+            })
+
     }
 
     /* Auto Local time set */

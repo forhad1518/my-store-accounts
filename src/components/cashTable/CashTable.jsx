@@ -1,23 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import useLocalStorageSet from '../../hooks/LocalStorage/useLocalStorageSet';
 import Swal from 'sweetalert2';
 import axiosCash from '../../api/axiosCash';
 
-export default function CashTable({ newCashData, setSynckClicked }) {
-    const { cashData } = useLocalStorageSet();
+export default function CashTable() {
     const [updateData, setUpdateData] = useState([])
-
-    // set old data from localstoreage
-    useEffect(() => {
-        setUpdateData(cashData)
-    }, [cashData])
-
-    // set new data with old data
-    useEffect(() => {
-        if (newCashData) {
-            setUpdateData(prev => [...prev, newCashData])
-        }
-    }, [newCashData])
 
     // data load form server 
     useEffect(() => {
@@ -58,7 +44,6 @@ export default function CashTable({ newCashData, setSynckClicked }) {
                     text: "Your file has been deleted.",
                     icon: "success"
                 });
-                setSynckClicked(prev => !prev); // Trigger sync state change
             }
         });
 
