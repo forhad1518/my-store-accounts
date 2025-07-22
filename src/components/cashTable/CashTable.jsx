@@ -1,28 +1,44 @@
 import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import axiosCash from '../../api/axiosCash';
+import autoSumInArray from '../../utils/autoSumInArray';
 
-export default function CashTable() {
-    const [updateData, setUpdateData] = useState([])
+export default function CashTable({ newCashData, setCashInAmount, setCashOutAmount }) {
+    const [updateData, setUpdateData] = useState([]);
+
+    // set new data with old data
+    useEffect(() => {
+        if (newCashData) {
+            setUpdateData(prev => [...prev, newCashData])
+        }
+    }, [newCashData])
+    // sum cash in amount
+    const cashInAmount = autoSumInArray(updateData, "in");
+    setCashInAmount(cashInAmount);
+
+    // sum cash out amount
+    const cashOutAmount = autoSumInArray(updateData, "out");
+    setCashOutAmount(cashOutAmount);
+
 
     // data load form server 
     useEffect(() => {
         axiosCash.get('/cash')
             .then(response => {
                 setUpdateData(prev => {
-                    const localIds = new Set(prev.map(item => item.id));
+                    const localIds = new Set(prev.map(item => item.id)); /* ata localstorage data check korar jonno diyeci, akhon hoytoba amon na korle o hoto */
                     const serverData = response.data.data || [];
                     // Merge without duplicates (by id)
                     const merged = [
                         ...serverData.filter(item => !localIds.has(item.id)), ...prev
-                    ];
+                    ];/* ata localstorage data check korar jonno diyeci, akhon hoytoba amon na korle o hoto */
                     return merged;
                 });
             })
             .catch(error => {
                 console.error('Error fetching cash data:', error);
             });
-    }, [])
+    }, []);
 
     // delete item from table
     const handleDelete = id => {
@@ -103,12 +119,12 @@ export default function CashTable() {
                                 .reverse()
                                 .map(data => (
                                     <tr
-                                        key={data.id || data._id}
+                                        key={data._id}
                                         className={`w-full table-auto ${data.cash === "in"
                                             ? "bg-green-100 hover:bg-green-200"
                                             : "bg-red-100 hover:bg-red-200"
-                                            } ${data._id ? "border-2 border-green-600" : "border-2 border-red-600"}`}
-                                        title={`${data._id ? "Sycked Data" : "Local Data"} - ${data.cash_option}`}
+                                            }`}
+                                        title={`${data.cash_option}`}
                                     >
                                         <td className="border px-4 py-2">{data.date}</td>
                                         <td className="border px-4 py-2">{data.cash_option}</td>

@@ -7,12 +7,22 @@ import CashTable from '../components/cashTable/CashTable'
 
 
 export default function Cash() {
-  const [defaultForm, setDefaultForm] = useState("Cash_In")
+  // State to manage which form to display
+  // Default form is Cash In
+  const [defaultForm, setDefaultForm] = useState("Cash_In");
 
+  // State to manage new cash data
+  // This can be used to pass data between components if needed
+  const [newCashData, setNewCashData] = useState();
+
+  // cash amount 
+  const [cashInAmount, setCashInAmount] = useState(0);
+  const [cashOutAmount, setCashOutAmount] = useState(0);
   return (
     <div>
       <div>
         <h1 className='text-2xl font-bold text-center my-5'>💰 Cash Management</h1>
+        <p className='text-center text-gray-600 mb-5'>Last Cash: {cashInAmount - cashOutAmount}</p>
       </div>
       <div>
         <div>
@@ -22,13 +32,14 @@ export default function Cash() {
             <CashOutB setDefaultForm={setDefaultForm}></CashOutB>
           </div>
           <div>
+            {/* cash in out form */}
             {
-              defaultForm === "Cash_In" ? <CashInForm ></CashInForm> : <CashOutForm ></CashOutForm>
+              defaultForm === "Cash_In" ? <CashInForm setNewCashData={setNewCashData}></CashInForm> : <CashOutForm setNewCashData={setNewCashData}></CashOutForm>
             }
           </div>
           {/* Table of All Transection */}
           <div className='text-center font-bold my-2'>***All Transections Here***</div>
-          <CashTable ></CashTable>
+          <CashTable newCashData={newCashData} setCashInAmount={setCashInAmount} setCashOutAmount={setCashOutAmount}></CashTable>
         </div>
       </div>
     </div>

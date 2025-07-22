@@ -23,13 +23,19 @@ export default function CashInForm({ setNewCashData }) {
                     icon: 'success',
                     title: 'Data Synced',
                     text: 'Your cash data has been synced successfully.',
+                    showConfirmButton: false
                 });
+                // Update new cash data state
+                setNewCashData(all_data);
+                e.target.reset(); // Reset form after submission
+
             })
             .catch(err => {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Data Synced Failed',
                     text: 'Your cash data has been not synced.',
+                    showConfirmButton: false
                 });
                 console.error("Error saving cash in data:", err);
             })
