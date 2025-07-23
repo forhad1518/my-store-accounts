@@ -6,8 +6,8 @@ export default function CashOutForm({ setNewCashData }) {
 
     const cashOutformHandle = e => {
         e.preventDefault()
-        /* Data from cash in form */
-        const date = e.target.date.value;
+        /* Auto Local time set */
+        const date = autoLocalDateTime();
         const cash_option = e.target.cash_out_option.value;
         const amount = parseFloat(e.target.amount.value);
         const description = e.target.description.value;

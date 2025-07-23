@@ -16,13 +16,14 @@ export default function Cash() {
   const [newCashData, setNewCashData] = useState();
 
   // cash amount 
-  const [cashInAmount, setCashInAmount] = useState(0);
-  const [cashOutAmount, setCashOutAmount] = useState(0);
+  const [summaryAmount, setSummaryAmount] = useState({})
+
   return (
     <div>
       <div>
         <h1 className='text-2xl font-bold text-center my-5'>💰 Cash Management</h1>
-        <p className='text-center text-gray-600 mb-5'>Last Cash: {cashInAmount - cashOutAmount}</p>
+        <p className='text-center text-gray-600 mb-5'>Last Cash: {summaryAmount.cashInAmount - summaryAmount.cashOutAmount || 0}</p>
+        {/* <p className='text-center text-gray-600 mb-5'>Last Cash: {summaryAmount.summary.today || 0}</p> */}
       </div>
       <div>
         <div>
@@ -39,7 +40,7 @@ export default function Cash() {
           </div>
           {/* Table of All Transection */}
           <div className='text-center font-bold my-2'>***All Transections Here***</div>
-          <CashTable newCashData={newCashData} setCashInAmount={setCashInAmount} setCashOutAmount={setCashOutAmount}></CashTable>
+          <CashTable newCashData={newCashData} setSummaryAmount={setSummaryAmount}></CashTable>
         </div>
       </div>
     </div>

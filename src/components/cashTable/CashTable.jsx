@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Swal from 'sweetalert2';
 import axiosCash from '../../api/axiosCash';
 import autoSumInArray from '../../utils/autoSumInArray';
+import calculateSummary from '../../utils/calculateSummary';
 
-export default function CashTable({ newCashData, setCashInAmount, setCashOutAmount }) {
+export default function CashTable({ newCashData, setSummaryAmount }) {
     const [updateData, setUpdateData] = useState([]);
 
     // set new data with old data
@@ -14,12 +15,18 @@ export default function CashTable({ newCashData, setCashInAmount, setCashOutAmou
     }, [newCashData])
     // sum cash in amount
     const cashInAmount = autoSumInArray(updateData, "in");
-    setCashInAmount(cashInAmount);
 
     // sum cash out amount
     const cashOutAmount = autoSumInArray(updateData, "out");
-    setCashOutAmount(cashOutAmount);
 
+    // summary calculation
+    const summary = calculateSummary(updateData);
+    const allSummary = { cashInAmount, cashOutAmount, summary };
+
+    useEffect(() => {
+        setSummaryAmount(allSummary);
+        // eslint-disable-next-line
+    }, [updateData]);
 
     // data load form server 
     useEffect(() => {
@@ -101,7 +108,7 @@ export default function CashTable({ newCashData, setCashInAmount, setCashOutAmou
             </div>
 
             {/* Table */}
-            <div className="max-h-[200px] overflow-y-auto">
+            <div className="max-h-[300px] overflow-y-auto">
                 <table className="table-auto w-full text-sm text-center border-collapse">
                     <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
                         <tr>
