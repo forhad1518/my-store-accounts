@@ -141,7 +141,7 @@ export default function CashTable({ newCashData, setSummaryAmount }) {
                                         </td>
                                         <td className="border px-4 py-2">
                                             <button
-                                                onClick={() => handleDelete(data.id)}
+                                                onClick={() => handleDelete(data._id)}
                                                 className={`hover:underline ${data._id ? "cursor-no-drop text-red-400" : "text-red-600"}`}
                                                 disabled={data._id ? true : false}
                                             >

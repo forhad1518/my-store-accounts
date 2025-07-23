@@ -4,6 +4,7 @@ import CashOutB from '../components/Cash In Out/CashOutB'
 import CashInForm from '../components/Cash In Out/CashInForm'
 import CashOutForm from '../components/Cash In Out/CashOutForm'
 import CashTable from '../components/cashTable/CashTable'
+import { motion } from "framer-motion";
 
 
 export default function Cash() {
@@ -17,18 +18,49 @@ export default function Cash() {
 
   // cash amount 
   const [summaryAmount, setSummaryAmount] = useState({})
+  console.log(summaryAmount?.summary?.today?.in);
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.1, duration: 0.5 }
+    }),
+  };
+
 
   return (
     <div>
-      <div>
-        <h1 className='text-2xl font-bold text-center my-5'>💰 Cash Management</h1>
-        <p className='text-center text-gray-600 mb-5'>Last Cash: {summaryAmount.cashInAmount - summaryAmount.cashOutAmount || 0}</p>
-        {/* <p className='text-center text-gray-600 mb-5'>Last Cash: {summaryAmount.summary.today || 0}</p> */}
+      <div className="max-w-5xl mx-auto px-2">
+        <p className="text-center text-gray-600 mb-6 text-lg">
+          Last Cash: <span className="font-semibold text-black">
+            {summaryAmount.cashInAmount - summaryAmount.cashOutAmount || 0}
+          </span>
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-center text-gray-700">
+          {[
+            { label: "Today In", val: summaryAmount?.summary?.today?.in, color: "green" },
+            { label: "Today Out", val: summaryAmount?.summary?.today?.out, color: "red" },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              custom={i}
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+              className={`p-2 rounded shadow-md bg-${item.color}-50`}
+            >
+              <h3 className="font-semibold text-lg mb-1">{item.label}: <span className={`text-lg font-bold text-${item.color}-600`}>{item.val || 0}</span></h3>
+            </motion.div>
+          ))}
+        </div>
       </div>
       <div>
         <div>
           {/* Cash in out button */}
-          <div className='flex justify-center gap-x-5 my-3'>
+          <div className='flex justify-center gap-x-5 mt-8 mb-2'>
             <CashInB setDefaultForm={setDefaultForm}></CashInB>
             <CashOutB setDefaultForm={setDefaultForm}></CashOutB>
           </div>
